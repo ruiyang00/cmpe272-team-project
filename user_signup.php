@@ -9,26 +9,22 @@ if (isset($_POST["email"]) && isset($_POST["username"]) && isset($_POST["passwor
     create_user($conn, $email, $username, $password);
     $user_id_row = get_user_id($conn, $email);
     $row = $user_id_row->fetch_assoc();
-    $user_id = $row['UserID'];
+    $token = $row['UserID'];
 
-    $data = array("id" => $user_id);
-    $string = http_build_query($data);
-
-    $ch = curl_init("");
-    curl_setopt($ch, CURLOPT_URL, "http://ruiyang90.info//oauth.php");
-    curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $string);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, false);
-    $response = curl_exec($ch);
-    curl_close($ch);
+    // $ch = curl_init("");
+    // curl_setopt($ch, CURLOPT_URL, "http://ruiyang90.info//oauth.php");
+    // curl_setopt($ch, CURLOPT_POST, true);
+    // curl_setopt($ch, CURLOPT_POSTFIELDS, $string);
+    // curl_setopt($ch, CURLOPT_RETURNTRANSFER, false);
+    // $response = curl_exec($ch);
+    // curl_close($ch);
 
     //set marketplace cookie
-    $token_val = $email . ',' . strval($password);
-    setcookie("curl_token", $token_val);
+    setcookie("curl_token", $token);
     $conn->close();
 
     //redirect
-    // header("Location: http://ruiyang90.info//oauth.php");
+    header("Location: http://ruiyang90.info");
 
 }
 
