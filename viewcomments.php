@@ -274,7 +274,7 @@ if (isset($_GET['id']) && isset($_GET['domain'])) {
     // <a class=\"btn hvr-hover\" href=" . $row["ProductURL"] . "?id=" . $row["ProductID"] . "&domain=" . $row["Domain"] . ">Company page/Add Comment</a>
     // join user table
     // get username
-    $searchsql = "SELECT * FROM Reviews WHERE ProductID = $id";
+    $searchsql = "SELECT * FROM Reviews JOIN Users ON Reviews.UserID = Users.UserID WHERE ProductID = $id";
     $result = $conn->query($searchsql);
 
     if ($result->num_rows > 0) {
@@ -284,11 +284,11 @@ if (isset($_GET['id']) && isset($_GET['domain'])) {
                 <div class=\"row justify-content-md-center\">
                   <div class=\"col-sm-6 col-md-6 col-lg-6 col-xl-6\">
                     <div class=\"why-text full-width\">
-                      <li><h4>" . $row["UserID"] . "</h4></li>
+                      <li><h4>" . $row["username"] . "</h4></li>
                       <h5>Rating</h5>
-                      <p>" . $row["Rating"] . "</p>
+                      <p>" . $row["Rating"] . "</p >
                       <h5>Rating</h5>
-                      <p>" . $row["Comment"] . "</p>
+                      <p>" . $row["Comment"] . "</p >
                     </div>
                   </div>
                 </div>
