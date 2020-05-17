@@ -174,28 +174,25 @@
 
       <div class="row special-list">
         <?php
-        $servername = "localhost";
-        $username = "root";
-        $password = "root";
-        $dbname = "thewayshop";
+include 'dbconfig.php';
 
-        // Create connection
-        $conn = new mysqli($servername, $username, $password, $dbname);
-        // Check connection
-        if ($conn->connect_error) {
-          die("Connection failed: " . $conn->connect_error);
-        }
-        if ($conn->connect_error) {
-          die("Connection failed: " . $conn->connect_error);
-        }
+// Create connection
+$conn = new mysqli($hn, $un, $pw, $db);
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
 
-        $searchsql = "SELECT * FROM Products WHERE Domain = 'fruit' ORDER BY Visit DESC LIMIT 5";
-        $result = $conn->query($searchsql);
+$searchsql = "SELECT * FROM Products WHERE Domain = 'fruit' ORDER BY Visit DESC LIMIT 5";
+$result = $conn->query($searchsql);
 
-        if ($result->num_rows > 0) {
-          while ($row = $result->fetch_assoc()) {
-            echo
-              "<div class=\"col-lg-3 col-md-6 special-grid best-seller\">
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        echo
+            "<div class=\"col-lg-3 col-md-6 special-grid best-seller\">
                             <div class=\"products-single fix\">
                                 <div class=\"box-img-hover\">
                                   <a href=\"viewcomments.php?id=" . $row["ProductID"] . "&domain=" . $row["Domain"] . "\">
@@ -205,12 +202,12 @@
                             </div>
                         </div>
                       ";
-          }
-          $conn->close();
-        } else {
-          echo "0 results";
-        }
-        ?>
+    }
+    $conn->close();
+} else {
+    echo "0 results";
+}
+?>
       </div>
     </div>
   </div>
@@ -228,30 +225,29 @@
         <div class="col-xl-9 col-lg-9 col-sm-12 col-xs-12 shop-content-right">
           <div class="right-product-box">
             <?php
-            $servername = "localhost";
-            $username = "root";
-            $password = "root";
-            $dbname = "thewayshop";
+$servername = "localhost";
+$username = "root";
+$password = "root";
+$dbname = "thewayshop";
 
-            // Create connection
-            $conn = new mysqli($servername, $username, $password, $dbname);
-            // Check connection
-            if ($conn->connect_error) {
-              die("Connection failed: " . $conn->connect_error);
-            }
-            if ($conn->connect_error) {
-              die("Connection failed: " . $conn->connect_error);
-            }
+// Create connection
+$conn = new mysqli($hn, $un, $pw, $db);
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
 
-            $search = $_GET['search'];
+$search = $_GET['search'];
+$searchsql = "SELECT * FROM Products WHERE Domain = 'fruit'";
+$result = $conn->query($searchsql);
 
-            $searchsql = "SELECT * FROM Products WHERE Domain = 'fruit'";
-            $result = $conn->query($searchsql);
-
-            if ($result->num_rows > 0) {
-              while ($row = $result->fetch_assoc()) {
-                echo
-                  "<div class=\"list-view-box\">
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        echo
+            "<div class=\"list-view-box\">
                     <div class=\"row justify-content-md-center\">
                       <div class=\"col-sm-6 col-md-6 col-lg-4 col-xl-4\">
                         <div class=\"products-single fix\">
@@ -271,12 +267,12 @@
                       </div>
                     </div>
                   </div>";
-              }
-              $conn->close();
-            } else {
-              echo "0 results";
-            }
-            ?>
+    }
+    $conn->close();
+} else {
+    echo "0 results";
+}
+?>
           </div>
         </div>
       </div>

@@ -169,31 +169,28 @@
       </div>
       <div class="row">
         <?php
-        $servername = "localhost";
-        $username = "root";
-        $password = "root";
-        $dbname = "thewayshop";
+include 'dbconfig.php';
 
-        // Create connection
-        $conn = new mysqli($servername, $username, $password, $dbname);
-        // Check connection
-        if ($conn->connect_error) {
-          die("Connection failed: " . $conn->connect_error);
-        }
-        if ($conn->connect_error) {
-          die("Connection failed: " . $conn->connect_error);
-        }
-        $cookie_name = "viewed";
-        if (!isset($_COOKIE[$cookie_name])) {
-          echo "Cookie named '" . $cookie_name . "' is not set!";
-        } else {
-          $data = json_decode($_COOKIE[$cookie_name], true);
-          $searchsql = "SELECT * FROM Products WHERE ProductID IN (" . implode(',', $data) . ") ORDER BY FIELD (ProductID," . implode(',', array_reverse($data)) . ")";
-          $result = $conn->query($searchsql);
+// Create connection
+$conn = new mysqli($hn, $un, $pw, $db);
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+$cookie_name = "viewed";
+if (!isset($_COOKIE[$cookie_name])) {
+    echo "Cookie named '" . $cookie_name . "' is not set!";
+} else {
+    $data = json_decode($_COOKIE[$cookie_name], true);
+    $searchsql = "SELECT * FROM Products WHERE ProductID IN (" . implode(',', $data) . ") ORDER BY FIELD (ProductID," . implode(',', array_reverse($data)) . ")";
+    $result = $conn->query($searchsql);
 
-          if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-              echo
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            echo
                 "<div class=\"col-lg-3 col-md-6 \">
                       <div class=\"products-single fix\">
                           <div class=\"box-img-hover\">
@@ -204,11 +201,11 @@
                       </div>
                   </div>
                 ";
-            }
-          }
-          $conn->close();
         }
-        ?>
+    }
+    $conn->close();
+}
+?>
       </div>
       <div class="row">
         <div class="col-lg-12">
@@ -220,28 +217,25 @@
       </div>
       <div class="row">
         <?php
-        $servername = "localhost";
-        $username = "root";
-        $password = "root";
-        $dbname = "thewayshop";
 
-        // Create connection
-        $conn = new mysqli($servername, $username, $password, $dbname);
-        // Check connection
-        if ($conn->connect_error) {
-          die("Connection failed: " . $conn->connect_error);
-        }
-        if ($conn->connect_error) {
-          die("Connection failed: " . $conn->connect_error);
-        }
 
-        $searchsql = "SELECT * FROM Products WHERE NOT Visit = 0 ORDER BY Visit DESC LIMIT 5";
-        $result = $conn->query($searchsql);
+// Create connection
+$conn = new mysqli($hn, $un, $pw, $db);
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
 
-        if ($result->num_rows > 0) {
-          while ($row = $result->fetch_assoc()) {
-            echo
-              "<div class=\"col-lg-3 col-md-6 special-grid \">
+$searchsql = "SELECT * FROM Products WHERE NOT Visit = 0 ORDER BY Visit DESC LIMIT 5";
+$result = $conn->query($searchsql);
+
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        echo
+            "<div class=\"col-lg-3 col-md-6 special-grid \">
                             <div class=\"products-single fix\">
                                 <div class=\"box-img-hover\">
                                   <a href=\"viewcomments.php?id=" . $row["ProductID"] . "&domain=" . $row["Domain"] . "\">
@@ -251,12 +245,12 @@
                             </div>
                         </div>
                       ";
-          }
-          $conn->close();
-        } else {
-          echo "0 results";
-        }
-        ?>
+    }
+    $conn->close();
+} else {
+    echo "0 results";
+}
+?>
       </div>
       <div class="row">
         <div class="col-lg-12">
@@ -268,28 +262,24 @@
       </div>
       <div class="row">
         <?php
-        $servername = "localhost";
-        $username = "root";
-        $password = "root";
-        $dbname = "thewayshop";
 
-        // Create connection
-        $conn = new mysqli($servername, $username, $password, $dbname);
-        // Check connection
-        if ($conn->connect_error) {
-          die("Connection failed: " . $conn->connect_error);
-        }
-        if ($conn->connect_error) {
-          die("Connection failed: " . $conn->connect_error);
-        }
+// Create connection
+$conn = new mysqli($hn, $un, $pw, $db);
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
 
-        $searchsql = "SELECT Products.ProductID, Products.Domain, Products.Image FROM Products JOIN Reviews ON Products.ProductID = Reviews.ProductID GROUP BY Products.ProductID, Products.Domain, Products.Image ORDER BY COUNT(Reviews.CommentID) DESC LIMIT 5";
-        $result = $conn->query($searchsql);
+$searchsql = "SELECT Products.ProductID, Products.Domain, Products.Image FROM Products JOIN Reviews ON Products.ProductID = Reviews.ProductID GROUP BY Products.ProductID, Products.Domain, Products.Image ORDER BY COUNT(Reviews.CommentID) DESC LIMIT 5";
+$result = $conn->query($searchsql);
 
-        if ($result->num_rows > 0) {
-          while ($row = $result->fetch_assoc()) {
-            echo
-              "<div class=\"col-lg-3 col-md-6 special-grid \">
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        echo
+            "<div class=\"col-lg-3 col-md-6 special-grid \">
                             <div class=\"products-single fix\">
                                 <div class=\"box-img-hover\">
                                   <a href=\"viewcomments.php?id=" . $row["ProductID"] . "&domain=" . $row["Domain"] . "\">
@@ -299,12 +289,12 @@
                             </div>
                         </div>
                       ";
-          }
-          $conn->close();
-        } else {
-          echo "0 results";
-        }
-        ?>
+    }
+    $conn->close();
+} else {
+    echo "0 results";
+}
+?>
       </div>
       <div class="row">
         <div class="col-lg-12">
@@ -316,28 +306,24 @@
       </div>
       <div class="row">
         <?php
-        $servername = "localhost";
-        $username = "root";
-        $password = "root";
-        $dbname = "thewayshop";
 
-        // Create connection
-        $conn = new mysqli($servername, $username, $password, $dbname);
-        // Check connection
-        if ($conn->connect_error) {
-          die("Connection failed: " . $conn->connect_error);
-        }
-        if ($conn->connect_error) {
-          die("Connection failed: " . $conn->connect_error);
-        }
+// Create connection
+$conn = new mysqli($hn, $un, $pw, $db);
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
 
-        $searchsql = "SELECT Products.ProductID, Products.Domain, Products.Image FROM Products JOIN Reviews ON Products.ProductID = Reviews.ProductID GROUP BY Products.ProductID, Products.Domain, Products.Image ORDER BY AVG(Reviews.Rating) DESC LIMIT 5";
-        $result = $conn->query($searchsql);
+$searchsql = "SELECT Products.ProductID, Products.Domain, Products.Image FROM Products JOIN Reviews ON Products.ProductID = Reviews.ProductID GROUP BY Products.ProductID, Products.Domain, Products.Image ORDER BY AVG(Reviews.Rating) DESC LIMIT 5";
+$result = $conn->query($searchsql);
 
-        if ($result->num_rows > 0) {
-          while ($row = $result->fetch_assoc()) {
-            echo
-              "<div class=\"col-lg-3 col-md-6 special-grid \">
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        echo
+            "<div class=\"col-lg-3 col-md-6 special-grid \">
                             <div class=\"products-single fix\">
                                 <div class=\"box-img-hover\">
                                   <a href=\"viewcomments.php?id=" . $row["ProductID"] . "&domain=" . $row["Domain"] . "\">
@@ -347,12 +333,12 @@
                             </div>
                         </div>
                       ";
-          }
-          $conn->close();
-        } else {
-          echo "0 results";
-        }
-        ?>
+    }
+    $conn->close();
+} else {
+    echo "0 results";
+}
+?>
       </div>
     </div>
   </div>

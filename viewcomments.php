@@ -1,42 +1,41 @@
 <?php
-if (isset( $_GET['id'])) {
-  $search = $_GET['id'];
-  $cookie_name = "viewed";
-  if(!isset($_COOKIE[$cookie_name])) {							
-    $new_cookie = [$search];
-    setcookie($cookie_name, json_encode($new_cookie), time() + (86400 * 30), "/");
-    $data = json_decode($_COOKIE[$cookie_name], true);
-  } else {
-    $data = json_decode($_COOKIE[$cookie_name], true);
-    if (($key = array_search($search, $data)) !== false) {
-      unset($data[$key]);
-      $data = array_values($data);
-    }
-    if (count($data) >= 5) {
-      array_shift($data);
-    }
-    $data[] = $search;
-    setcookie($cookie_name, json_encode($data), time() + (86400 * 30), "/");
-    $data = json_decode($_COOKIE[$cookie_name], true);
-  }
-  $servername = "localhost";
-  $username = "root";
-  $password = "root";
-  $dbname = "thewayshop";
 
-  // Create connection
-  $conn = new mysqli($servername, $username, $password, $dbname);
-  // Check connection
-  if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-  }
-  if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-  }
+include 'dbconfig.php';
 
-  $writesql = "UPDATE Products SET Visit = Visit+1 WHERE ProductID=$search";
-  $conn->query($writesql);
-  $conn->close();
+if (isset($_GET['id'])) {
+    $search = $_GET['id'];
+    $cookie_name = "viewed";
+    if (!isset($_COOKIE[$cookie_name])) {
+        $new_cookie = [$search];
+        setcookie($cookie_name, json_encode($new_cookie), time() + (86400 * 30), "/");
+        $data = json_decode($_COOKIE[$cookie_name], true);
+    } else {
+        $data = json_decode($_COOKIE[$cookie_name], true);
+        if (($key = array_search($search, $data)) !== false) {
+            unset($data[$key]);
+            $data = array_values($data);
+        }
+        if (count($data) >= 5) {
+            array_shift($data);
+        }
+        $data[] = $search;
+        setcookie($cookie_name, json_encode($data), time() + (86400 * 30), "/");
+        $data = json_decode($_COOKIE[$cookie_name], true);
+    }
+
+    // Create connection
+    $conn = new mysqli($hn, $un, $pw, $db);
+    // Check connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+
+    $writesql = "UPDATE Products SET Visit = Visit+1 WHERE ProductID=$search";
+    $conn->query($writesql);
+    $conn->close();
 }
 ?>
 <!DOCTYPE html>
@@ -194,12 +193,12 @@ if (isset( $_GET['id'])) {
             <div class="row">
                 <div class="col-lg-12">
                     <h2>View comments </h2>
-                   
+
                 </div>
             </div>
         </div>
     </div>
-     <!-- End All Title Box --> 
+     <!-- End All Title Box -->
 
     <!-- Start Shop Page  -->
     <html lang="en">
@@ -219,54 +218,28 @@ if (isset( $_GET['id'])) {
 </head>
 <body>
   <div class="container">
-    <?php  
-      if (isset($_GET['id']) && isset($_GET['domain'])) {
+    <?php
+if (isset($_GET['id']) && isset($_GET['domain'])) {
+    // Create connection
+    $conn = new mysqli($hn, $un, $pw, $db);
+    // Check connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
 
-        $search = $_GET['id'];
-        $cookie_name = "viewed";
-        if(!isset($_COOKIE[$cookie_name])) {							
-          $new_cookie = [$search];
-          setcookie($cookie_name, json_encode($new_cookie), time() + (86400 * 30), "/");
-          $data = json_decode($_COOKIE[$cookie_name], true);
-        } else {
-          $data = json_decode($_COOKIE[$cookie_name], true);
-          if (($key = array_search($search, $data)) !== false) {
-            unset($data[$key]);
-            $data = array_values($data);
-          }
-          if (count($data) >= 5) {
-            array_shift($data);
-          }
-          $data[] = $search;
-          setcookie($cookie_name, json_encode($data), time() + (86400 * 30), "/");
-          $data = json_decode($_COOKIE[$cookie_name], true);
-        }
+    $id = $_GET['id'];
+    $domain = $_GET['domain'];
 
-        $servername = "localhost";
-        $username = "root";
-        $password = "root";
-        $dbname = "thewayshop";
-  
-        // Create connection
-        $conn = new mysqli($servername, $username, $password, $dbname);
-        // Check connection
-        if ($conn->connect_error) {
-          die("Connection failed: " . $conn->connect_error);
-        }
-        if ($conn->connect_error) {
-          die("Connection failed: " . $conn->connect_error);
-        }
-  
-        $id = $_GET['id'];
-        $domain = $_GET['domain'];
+    $productsql = "SELECT * FROM Products WHERE ProductID = $id";
+    $result = $conn->query($productsql);
 
-        $productsql = "SELECT * FROM Products WHERE ProductID = $id";
-        $result = $conn->query($productsql);
-
-        if ($result->num_rows > 0) {
-          while ($row = $result->fetch_assoc()) {
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
             echo
-              "<div class=\"list-view-box\">
+                "<div class=\"list-view-box\">
                 <div class=\"row justify-content-md-center\">
                   <div class=\"col-sm-6 col-md-6 col-lg-4 col-xl-4\">
                     <div class=\"products-single fix\">
@@ -278,36 +251,36 @@ if (isset( $_GET['id'])) {
                   <div class=\"col-sm-6 col-md-6 col-lg-8 col-xl-8\">
                     <div class=\"why-text full-width\">
                       <li><h4>" . $row["ProductName"] . "</h4></li>";
-                      if ($row["Price"] != 0) {
-                        echo "<h5>$" . $row["Price"] . "</h5>";
-                      }
-                      echo 
-                      "<p>" . $row["Description"] . "</p>
+            if ($row["Price"] != 0) {
+                echo "<h5>$" . $row["Price"] . "</h5>";
+            }
+            echo
+                "<p>" . $row["Description"] . "</p>
                       </br>
                       </br>
                       </br>
-                      <form action='sentauth.php' method=\"POST\">
-                        <input type=\"hidden\" id=\"ProductURL\" name=\"ProductURL\" value=".$row["ProductURL"].">
-                        <input type=\"hidden\" id=\"ProductID\" name=\"ProductID\" value=".$row["ProductID"].">
-                        <input type=\"hidden\" id=\"Domain\" name=\"Domain\" value=".$row["Domain"].">
+                      <form action='post_curl.php' method=\"POST\">
+                        <input type=\"hidden\" id=\"product_url\" name=\"product_url\" value=" . $row["ProductURL"] . ">
+                        <input type=\"hidden\" id=\"product_id\" name=\"product_id\" value=" . $row["ProductID"] . ">
+                        <input type=\"hidden\" id=\"Domain\" name=\"Domain\" value=" . $row["Domain"] . ">
                         <input class=\"btn hvr-hover\" type=\"submit\" id=\"submit\" name=\"submit\"  value=\"Company page/Add Comment\">
                       </form>
                     </div>
                   </div>
                 </div>
               </div>";
-          }     
         }
-        // <a class=\"btn hvr-hover\" href=" . $row["ProductURL"] . "?id=" . $row["ProductID"] . "&domain=" . $row["Domain"] . ">Company page/Add Comment</a>
-        // join user table
-        // get username
-        $searchsql = "SELECT * FROM Reviews WHERE ProductID = $id";
-        $result = $conn->query($searchsql);
-  
-        if ($result->num_rows > 0) {
-          while ($row = $result->fetch_assoc()) {
+    }
+    // <a class=\"btn hvr-hover\" href=" . $row["ProductURL"] . "?id=" . $row["ProductID"] . "&domain=" . $row["Domain"] . ">Company page/Add Comment</a>
+    // join user table
+    // get username
+    $searchsql = "SELECT * FROM Reviews WHERE ProductID = $id";
+    $result = $conn->query($searchsql);
+
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
             echo
-              "<div class=\"list-view-box\">
+                "<div class=\"list-view-box\">
                 <div class=\"row justify-content-md-center\">
                   <div class=\"col-sm-6 col-md-6 col-lg-6 col-xl-6\">
                     <div class=\"why-text full-width\">
@@ -320,12 +293,11 @@ if (isset( $_GET['id'])) {
                   </div>
                 </div>
               </div>";
-          }
-          $conn->close();
         }
-        else {
-          echo 
-          "<div class=\"list-view-box\">
+        $conn->close();
+    } else {
+        echo
+            "<div class=\"list-view-box\">
                 <div class=\"row justify-content-md-center\">
                   <div class=\"col-sm-6 col-md-6 col-lg-6 col-xl-6\">
                     <div class=\"why-text full-width\">
@@ -334,9 +306,9 @@ if (isset( $_GET['id'])) {
                   </div>
                 </div>
             </div>";
-        }
-      }
-    ?>
+    }
+}
+?>
   </div>
     <!-- Start Footer  -->
     <footer>
