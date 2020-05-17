@@ -287,7 +287,7 @@ if (isset($_GET['id']) && isset($_GET['domain'])) {
                       <li><h4>" . $row["username"] . "</h4></li>
                       <h5>Rating</h5>
                       <p>" . $row["Rating"] . "</p >
-                      <h5>Rating</h5>
+                      <h5>Review</h5>
                       <p>" . $row["Comment"] . "</p >
                     </div>
                   </div>
