@@ -12,13 +12,18 @@
   echo  "comment " +$comment+ '\n';
 
 
-  $servername = "localhost";
-  $username = "root";
-  $password = "root";
-  $dbname = "thewayshop";
+  // $servername = "localhost";
+  // $username = "root";
+  // $password = "root";
+  // $dbname = "thewayshop";
   
+  // // Create connection
+  // $conn = new mysqli($servername, $username, $password, $dbname);
+
+  include 'dbconfig.php';
+
   // Create connection
-  $conn = new mysqli($servername, $username, $password, $dbname);
+  $conn = new mysqli($hn, $un, $pw, $db);
   // Check connection
   if ($conn->connect_error) {
       die("Connection failed: " . $conn->connect_error);
